@@ -36,6 +36,7 @@ function prepTables(groups, probes) {
                 tables.appendChild(table);
 
                 row = document.createElement('tr');
+                row.className = 'header';
                 cell = document.createElement('th');
                 row.appendChild(cell);
 
@@ -53,6 +54,9 @@ function prepTables(groups, probes) {
             row = document.createElement('tr');
             row.id = 'row-' + group;
             row.className = 'group';
+            if (table.children.length % 2 === 1) {
+                row.className += ' odd';
+            }
 
             cell = document.createElement('th');
             cell.id = 'header-' + group;

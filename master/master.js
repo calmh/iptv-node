@@ -62,11 +62,11 @@ app.post('/register', function (req, res) {
                 probes[ip] = obj.register;
                 res.setHeader('Content-Type', 'application/json');
                 res.write(JSON.stringify({ memberships: item.memberships, reportInterval: reportInterval, registerInterval: registerInterval }));
-                res.end();
             }
         });
     }
 
+    res.end();
 });
 
 app.post('/report', function (req, res) {

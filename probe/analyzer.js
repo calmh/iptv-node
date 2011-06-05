@@ -1,3 +1,8 @@
+/*jslint onevar: true, node: true, continue: false, plusplus: false, bitwise: true,
+newcap: true, strict: false, maxerr: 50, indent: 4, undef: true */
+
+/*global exports: false */
+
 var assert = require('assert');
 var fs = require('fs');
 var _ = require('underscore')._;
@@ -32,7 +37,7 @@ exports.testParseLineGroup = function () {
     assert.strictEqual(obj.discontinuity, 21);
     assert.strictEqual(obj.payload_bytes, 8015037464);
     assert.strictEqual(obj.packets, 6090454);
-}
+};
 
 exports.testParseLineHeader = function () {
     var obj = parseLine('# info:time created:1306422371.219097603 now:1307282708.493404201 delta:860337.274306598');
@@ -40,7 +45,7 @@ exports.testParseLineHeader = function () {
     assert.strictEqual(obj.created, 1306422371.219097603);
     assert.strictEqual(obj.now, 1307282708.493404201);
     assert.strictEqual(obj.delta, 860337.274306598);
-}
+};
 
 function handleFileData(data, cache, cb) {
     var now, lines, results;
@@ -99,10 +104,10 @@ exports.reportFileData = function (cache, file, cb) {
         }
         handleFileData(data, cache, cb);
     });
-}
+};
 
 var callbackCounter = 0;
-exports.testReportFileData1 = function () {
+exports.testReportFileData = function () {
     var cache = {};
 
     exports.reportFileData(cache, 'fixtures/iptv_0', function (results) {
@@ -131,9 +136,9 @@ exports.testReportFileData1 = function () {
             callbackCounter += 1;
         });
     });
-}
+};
 
-process.addListener('exit', function() {
+process.addListener('exit', function () {
     assert.strictEqual(callbackCounter, 2);
 });
 

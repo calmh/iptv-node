@@ -106,7 +106,7 @@ app.post('/report', function (req, res) {
                     disconPerH = 0;
                 }
 
-                group[probe] = { when: now, pids: item.pids, bytes: item.bytes, packets: item.packets, dph: disconPerH };
+                group[probe] = { when: now, pids: item.pids, mbps: item.mbps, pps: item.pps, dph: disconPerH };
             });
         }
     }

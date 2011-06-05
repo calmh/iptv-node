@@ -1,5 +1,6 @@
 var prevGroupsStr, prevProbesStr;
 var tableIdRegexp = new RegExp("^\\d+\\.\\d+\\.\\d+\\.");
+var minPps = 20; // Absolute minimum expected PPS for a channel.
 
 // Workaround for Prototype swallowing all exceptions in callbacks.
 Ajax.Responders.register({ 
@@ -105,10 +106,10 @@ function getChannelStatus() {
                             cell.removeClassName('unknown');
                             age = now - stats.when;
 
-                            cell.innerHTML = stats.bytes.toFixed(1) + ' M';
-                            if (age > obj.reportInterval * 1.5 || stats.packets < 50) {
+                            cell.innerHTML = stats.mbps.toFixed(1) + ' M';
+                            if (age > obj.reportInterval * 1.5 || stats.pps < minPps) {
                                 cell.addClassName('missing');
-                                cell.innerHTML = stats.packets + ' pps';
+                                cell.innerHTML = stats.pps + ' pps';
                             } else if (stats.dph > 20) {
                                 cell.addClassName('crit');
                                 cell.innerHTML = stats.dph + ' eph';

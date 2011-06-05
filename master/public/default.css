@@ -44,8 +44,11 @@ td.probe.crit {
     color: #400;
 }
 td.probe.unknown {
-    background-image: url(/img/disconnect.png);
-    color: #668;
+    background-image: url(/img/control_stop.png);
+    color: #666;
+}
+#legend td {
+    height: 16px;
 }
 
 .tight {

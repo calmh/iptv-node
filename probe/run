@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# If the module isn't loaded, load it and set a rule to use it.
+if  ! ( lsmod | grep -q xt_mpeg2ts ) ; then
+	modprobe xt_mpeg2ts
+	iptables -t mangle -I PREROUTING -p udp -m mpeg2ts --name iptv
+fi
+
+# Wait for DHCP to really complete
+sleep 60
+# Restart smcroute. This will drop any old memberships, and make
+# sure it sees any interfaces that have been brought up by DHCP.
+/etc/init.d/smcroute stop ; /etc/init.d/smcroute start
+
+exec node probe.js
+

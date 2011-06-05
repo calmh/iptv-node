@@ -1,0 +1,38 @@
+body {
+	font-family: Calibri, Helvetica, sans-serif;
+	font-size: 10pt;
+	}
+	table {
+		border-spacing: 3px;
+	}
+	td {
+		background-color: #eee;
+		padding: 0px 4px 0px 4px;
+	}
+	th {
+		background-color: #222;
+		color: #eee;
+		text-align: left;
+		padding: 3px;
+	}
+	.meter {
+		width: 50px;
+	}
+	.right {
+		text-align: right;
+	}
+
+	.neutral {
+		background-color: #999;
+		border-left: 1px solid #444;
+		border-right: 1px solid #444;
+	}
+	.ok {
+		background-color: #6b6;
+	}
+	.warn {
+		background-color: #bb6;
+	}
+	.crit {
+		background-color: #b66;
+	}

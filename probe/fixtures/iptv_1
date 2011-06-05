@@ -1,0 +1,6 @@
+# info:version module:xt_mpeg2ts version:0.9.0
+# info:time created:1306422371.219097603 now:1307283996.934288740 delta:861625.715191137
+# info:dynamic rule_id:1 streams:46 streams_check:46 max_list_search:0 rnd:1904527809
+# info:config htable_size:100 max-streams:0 list_search_warn_level:20
+bucket:2 dst:239.193.46.33 src:192.168.0.1 dport:10000 sport:10000 pids:9 skips:8741 discontinuity:1911 payload_bytes:544720728216 packets:413921526
+bucket:8 dst:239.193.46.67 src:192.168.0.1 dport:10000 sport:10000 pids:7 skips:2383 discontinuity:579 payload_bytes:457411809708 packets:347577363

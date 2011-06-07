@@ -98,7 +98,15 @@ function getChannelStatus() {
             if (obj.status) {
                 now = obj.now;
 
-                groups = _.keys(obj.status).sort();
+                groups = _.keys(obj.status).sort(function (a, b) {
+                    // IP numerical sort
+                    var al, bl, an, bn;
+                    al = _.map(a.split('.'), function (x) { return parseInt(x, 10); });
+                    bl = _.map(b.split('.'), function (x) { return parseInt(x, 10); });
+                    an = al[0]; an *= 256; an += al[1]; an *= 256; an += al[2]; an *= 256; an += al[3];
+                    bn = bl[0]; bn *= 256; bn += bl[1]; bn *= 256; bn += bl[2]; bn *= 256; bn += bl[3];
+                    return an - bn;
+                });
                 probes = _.uniq(_.flatten(_.map(obj.status, function (probes, group) { return _.keys(probes); })).sort(), 1);
                 groupsStr = groups.join(',');
                 probesStr = probes.join(',');

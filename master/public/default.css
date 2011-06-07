@@ -4,8 +4,14 @@ body {
     line-height: 1.2;
     font-weight: 300;
 }
-table {
+#legend {
+	clear: both;
+}
+table.channels {
     border-collapse: collapse;
+    margin: 5px;
+    float: left;
+    clear: none;
 }
 tr.odd {
     background: #eee;

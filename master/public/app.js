@@ -1,6 +1,7 @@
 var prevGroupsStr, prevProbesStr;
 var tableIdRegexp = new RegExp("^\\d+\\.\\d+\\.\\d+\\.");
 var minPps = 20; // Absolute minimum expected PPS for a channel.
+var refreshInterval = 5; // seconds, will be updated by master server
 
 // Workaround for Prototype swallowing all exceptions in callbacks.
 Ajax.Responders.register({ 
@@ -30,8 +31,10 @@ function prepTables(groups, probes) {
         if (match) {
             tableId = 'table-' + match[0];
             table = document.getElementById(tableId);
+
             if (table === null) {
                 table = document.createElement('table');
+                table.className = 'channels';
                 table.id = tableId;
                 tables.appendChild(table);
 
@@ -87,6 +90,11 @@ function getChannelStatus() {
 
             obj = response.responseJSON;
 
+            if (obj.reportInterval) {
+                refreshInterval = obj.reportInterval;
+                document.getElementById('refreshInterval').innerHTML = refreshInterval;
+            }
+
             if (obj.status) {
                 now = obj.now;
 
@@ -108,6 +116,10 @@ function getChannelStatus() {
                         cell = $(group + '-' + probe);
                         if (cell) {
                             cell.removeClassName('unknown');
+                            cell.removeClassName('missing');
+                            cell.removeClassName('warn');
+                            cell.removeClassName('crit');
+                            cell.removeClassName('ok');
                             age = now - stats.when;
 
                             cell.innerHTML = stats.mbps.toFixed(1) + ' M';
@@ -128,7 +140,7 @@ function getChannelStatus() {
                 });
             }
 
-            setTimeout(getChannelStatus, 5000);
+            setTimeout(getChannelStatus, refreshInterval * 1000);
         }
     });
 }

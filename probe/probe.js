@@ -23,8 +23,8 @@ var hostname;
 var interval = 500;
 var memberships = [];
 var globalCache = {};
-var registerInterval = 300 * 1000;
-var reportInterval = 30 * 1000;
+var registerInterval = 300;
+var reportInterval = 30;
 
 function setIgmpMembership() {
     var current, diff;
@@ -79,7 +79,7 @@ function register() {
     req.write(JSON.stringify({ register: hostname, httpPort: httpPort }));
     req.end();
 
-    _.delay(register, registerInterval);
+    _.delay(register, registerInterval * 1000);
 }
 
 function reportStatistics() {
@@ -101,7 +101,7 @@ function reportStatistics() {
         req.end();
     });
 
-    _.delay(reportStatistics, reportInterval);
+    _.delay(reportStatistics, reportInterval * 1000);
 }
 
 if (httpPort > 0) {

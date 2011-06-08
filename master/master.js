@@ -3,8 +3,8 @@ newcap: true, strict: false, maxerr: 50, indent: 4, undef: true */
 
 // Configuration:
 
-var reportInterval = 15; // How often should probes check in statistics data?
-var registerInterval = 30; // How often should probes register with master?
+var reportInterval = 30; // How often should probes check in statistics data?
+var registerInterval = 300; // How often should probes register with master?
 
 // Define channel packages:
 var seChannels = [ '239.193.46.32', '239.193.46.33', '239.193.46.34', '239.193.46.35', '239.193.46.36', '239.193.46.37', '239.193.46.38', '239.193.46.39', '239.193.46.40', '239.193.46.64', '239.193.46.65', '239.193.46.66', '239.193.46.67', '239.193.46.68', '239.193.46.69', '239.193.46.70', '239.193.46.71', '239.193.46.72', '239.193.46.73', '239.193.46.74', '239.193.46.75', '239.193.46.76', '239.193.46.77', '239.193.46.78', '239.193.46.79', '239.193.46.80', '239.193.46.81' ];
@@ -16,6 +16,7 @@ var allChannels = dkChannels.concat(seChannels);
 var memberships = [ 
     { regexp: /.*vp.*/, memberships: seChannels },
     { regexp: /^probe1$/, memberships: allChannels },
+    { regexp: /^probe2$/, memberships: allChannels },
     { regexp: /probe/, memberships: seBaseChannels },
 ];
 

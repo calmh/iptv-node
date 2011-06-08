@@ -11,7 +11,13 @@ Ajax.Responders.register({
 });
 
 function prepTables(groups, probes) {
-    var tables, content;
+    var tables, content, probeNames, probeToIp;
+
+    probeNames = _.values(probes).sort();
+    probeToIp = {};
+    _.each(probes, function (probe, ip) {
+        probeToIp[probe] = ip;
+    });
 
     content = document.getElementById('content');
     tables = document.getElementById('tables');
@@ -43,11 +49,13 @@ function prepTables(groups, probes) {
                 cell = document.createElement('th');
                 row.appendChild(cell);
 
-                _.each(probes, function (probe) {
+                _.each(probeNames, function (probe) {
+                    var ip = probeToIp[probe];
                     cell = document.createElement('th');
                     cell.id = 'header-' + probe;
                     cell.className = 'probe';
-                    cell.innerHTML = probe;
+                    //cell.innerHTML = '<abbr title="' + ip + '">' + probe + '</abbr>';
+                    cell.innerHTML = probe + '<br /><span class="ip">' + ip + '</span>';
                     row.appendChild(cell);
                 });
 
@@ -68,7 +76,7 @@ function prepTables(groups, probes) {
 
             row.appendChild(cell);
 
-            _.each(probes, function (probe) {
+            _.each(probeNames, function (probe) {
                 cell = document.createElement('td');
                 cell.id =  group + '-' + probe;
                 cell.className = 'probe unknown tight';
@@ -107,12 +115,13 @@ function getChannelStatus() {
                     bn = bl[0]; bn *= 256; bn += bl[1]; bn *= 256; bn += bl[2]; bn *= 256; bn += bl[3];
                     return an - bn;
                 });
-                probes = _.uniq(_.flatten(_.map(obj.status, function (probes, group) { return _.keys(probes); })).sort(), 1);
                 groupsStr = groups.join(',');
+
+                probes = _.values(obj.probes).sort();
                 probesStr = probes.join(',');
 
                 if (prevGroupsStr !== groupsStr || prevProbesStr !== probesStr) {
-                    prepTables(groups, probes);
+                    prepTables(groups, obj.probes);
                     prevGroupsStr = groupsStr;
                     prevProbesStr = probesStr;
                 }

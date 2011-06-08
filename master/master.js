@@ -70,7 +70,7 @@ app.get('/status', function (req, res) {
     cleanChannelStats();
     var now = Math.round((new Date()).getTime() / 1000);
     res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify({ status: channelStats, now: now, reportInterval: reportInterval }));
+    res.write(JSON.stringify({ status: channelStats, now: now, reportInterval: reportInterval, probes: probes }));
     res.end();
 });
 

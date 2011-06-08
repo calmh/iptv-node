@@ -66,3 +66,6 @@ td.probe.unknown {
 .tight {
     word-spacing: -0.15em;
 }
+.ip {
+	font-size: 80%;
+}

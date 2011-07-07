@@ -65,7 +65,7 @@ function handleFileData(data, cache, cb) {
             if (typeof old !== 'undefined') {
                 td = now - old.when;
 
-                if (parsed.discon === old.disconinuity) {
+                if (parsed.discon === old.discontinuity) {
                     parsed.lastdiscon = old.lastdiscon;
                 } else {
                     parsed.lastdiscon = now;
@@ -80,7 +80,8 @@ function handleFileData(data, cache, cb) {
                 diff.skips = parsed.skips;
                 diff.discon = parsed.discontinuity;
                 diff.mbps = Math.round(kBytes * 8) / 1000;
-                diff.pps = parseInt((parsed.packets - old.packets) / td * 1000, 10);
+                diff.pps = Math.round((parsed.packets - old.packets) / td * 1000);
+                diff.dpp = Math.round((parsed.discon - old.discon) / (parsed.packets - old.packets));
                 diff.lastdiscon = Math.round((now - parsed.lastdiscon) / 1000);
 
                 results.push(diff);

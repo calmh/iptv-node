@@ -128,7 +128,7 @@ function getChannelStatus() {
 
                 _.each(obj.status, function (probes, group) {
                     _.each(probes, function (stats, probe) {
-                        var age;
+                        var age, exp, man, dppForm;
 
                         cell = $(group + '-' + probe);
                         if (cell) {
@@ -139,17 +139,25 @@ function getChannelStatus() {
                             cell.removeClassName('ok');
                             age = now - stats.when;
 
-                            cell.innerHTML = stats.mbps.toFixed(1) + ' M';
-                            cell.setAttribute('title', stats.dpp);
+                            // Format discontinuitites per packet as an exponential error rate.
+                            if (stats.dpp <= 0) {
+                                dppForm = '0';
+                            } else {
+                                exp = Math.floor(Math.log(Math.abs(stats.dpp)) / Math.LN10);
+                                man = stats.dpp / Math.pow(10, exp);
+                                dppForm = man.toFixed(1) + '×10<sup>' + exp + '</sup>';
+                            }
+
+                            cell.innerHTML = stats.mbps.toFixed(1) + ' Mbps';
                             if (age > obj.reportInterval * 1.5 || stats.pps < minPps) {
                                 cell.addClassName('missing');
                                 cell.innerHTML = stats.pps + ' pps';
                             } else if (stats.dpp >= 0.0001) {
                                 cell.addClassName('crit');
-                                cell.innerHTML = (stats.dpp * 100).toFixed(3) + '%';
+                                cell.innerHTML = dppForm;
                             } else if (stats.dph > 0) {
                                 cell.addClassName('warn');
-                                cell.innerHTML = stats.dph + ' eph';
+                                cell.innerHTML = dppForm;
                             } else {
                                 cell.addClassName('ok');
                             }

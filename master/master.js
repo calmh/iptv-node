@@ -17,6 +17,7 @@ var memberships = [
     { regexp: /.*vp.*/, memberships: seChannels },
     { regexp: /^probe1$/, memberships: allChannels },
     { regexp: /^probe2$/, memberships: allChannels },
+    { regexp: /^probe3$/, memberships: seChannels },
     { regexp: /probe/, memberships: seBaseChannels },
 ];
 
@@ -109,11 +110,11 @@ app.post('/report', function (req, res) {
     if (typeof probe !== 'undefined') {
         console.log('Report from ' + probe);
         obj = req.body;
-        now = Math.round((new Date()).getTime() / 1000, 10);
+        now = Math.round((new Date()).getTime() / 1000);
 
         if (obj.report) {
             _.each(obj.report, function (item) {
-                var group, disconPerH, groupProbe, disconList, d_discon, d_sec;
+                var group, disconPerH, groupProbe, disconList, d_discon, d_sec, dpp;
                 groupProbe = item.dst + '-' + probe;
 
                 group = channelStats[item.dst];
@@ -126,19 +127,20 @@ app.post('/report', function (req, res) {
                     disconList = discons[groupProbe] = [];
                 }
 
+                disconPerH = 0;
                 disconList.push({ when: now, discon: item.discon });
                 if (disconList.length > 1) {
-                    while (disconList[0].when < now - 3600) {
+                    while (disconList[0].when < now - 600) {
                         disconList.shift();
                     }
                     d_discon = (_.last(disconList).discon - disconList[0].discon);
-                    d_sec = (_.last(disconList).when - disconList[0].when);
-                    disconPerH = Math.round(3600 * d_discon / d_sec);
-                } else {
-                    disconPerH = 0;
+                    if (d_discon > 0) {
+                        d_sec = (_.last(disconList).when - disconList[0].when);
+                        disconPerH = Math.round(3600 * d_discon / d_sec);
+                    }
                 }
 
-                group[probe] = { when: now, pids: item.pids, mbps: item.mbps, pps: item.pps, dph: disconPerH };
+                group[probe] = { when: now, pids: item.pids, mbps: item.mbps, pps: item.pps, dph: disconPerH, dpp: item.dpp };
             });
         }
     }

@@ -5,6 +5,7 @@ newcap: true, strict: false, maxerr: 50, indent: 4, undef: true */
 
 var reportInterval = 30; // How often should probes check in statistics data?
 var registerInterval = 300; // How often should probes register with master?
+var historyInterval = 300; // How long do we keep error history (yellow warning triangle).
 
 // Define channel packages:
 var seChannels = [ '239.193.46.32', '239.193.46.33', '239.193.46.34', '239.193.46.35', '239.193.46.36', '239.193.46.37', '239.193.46.38', '239.193.46.39', '239.193.46.40', '239.193.46.64', '239.193.46.65', '239.193.46.66', '239.193.46.67', '239.193.46.68', '239.193.46.69', '239.193.46.70', '239.193.46.71', '239.193.46.72', '239.193.46.73', '239.193.46.74', '239.193.46.75', '239.193.46.76', '239.193.46.77', '239.193.46.78', '239.193.46.79', '239.193.46.80', '239.193.46.81' ];
@@ -71,7 +72,7 @@ app.get('/status', function (req, res) {
     cleanChannelStats();
     var now = Math.round((new Date()).getTime() / 1000);
     res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify({ status: channelStats, now: now, reportInterval: reportInterval, probes: probes }));
+    res.write(JSON.stringify({ status: channelStats, now: now, reportInterval: reportInterval, historyInterval: historyInterval, probes: probes }));
     res.end();
 });
 
@@ -130,7 +131,7 @@ app.post('/report', function (req, res) {
                 disconPerH = 0;
                 disconList.push({ when: now, discon: item.discon });
                 if (disconList.length > 1) {
-                    while (disconList[0].when < now - 600) {
+                    while (disconList[0].when < now - historyInterval) {
                         disconList.shift();
                     }
                     d_discon = (_.last(disconList).discon - disconList[0].discon);

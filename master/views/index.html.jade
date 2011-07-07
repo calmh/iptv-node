@@ -9,12 +9,14 @@ div#legend
     tr
       td.probe.ok OK (no errors, good PPS). Data rate reported in Mbits/second.
     tr
-      td.probe.warn Warning (some errors). Errors reported as error rate (errors/packets).
+      td.probe.warn Warning (there were errors within the last history interval). Errors reported as errors per hour.
     tr
-      td.probe.crit Critical (many errors). Errors reported as error rate (errors/packets).
+      td.probe.crit Critical (there were errors within the last measurement interval). Errors reported as error rate (errors/packets).
     tr
       td.probe.missing Missing (too low PPS). Packets/second reported.
   p
-    | Statistics updated every
+    | The measurement interval is
     span#refreshInterval -
+    |  seconds. The history interval is
+    span#historyInterval -
     |  seconds.

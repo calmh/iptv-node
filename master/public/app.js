@@ -162,6 +162,9 @@ function getChannelStatus() {
                 refreshInterval = obj.reportInterval;
                 document.getElementById('refreshInterval').innerHTML = refreshInterval;
             }
+            if (obj.historyInterval) {
+                document.getElementById('historyInterval').innerHTML = obj.historyInterval;
+            }
 
             if (obj.status) {
                 now = obj.now;
@@ -199,25 +202,22 @@ function getChannelStatus() {
                             cell.removeClassName('ok');
                             age = now - stats.when;
 
-                            // Format discontinuitites per packet as an exponential error rate.
-                            if (stats.dpp <= 0) {
-                                dppForm = '0';
-                            } else {
+                            cell.innerHTML = stats.mbps.toFixed(1) + ' Mbps';
+                            cell.setAttribute('title', 'Packets: ' + stats.pps + '\nER: ' + stats.dpp + '\nErrors/h: ' + stats.dph);
+
+                            if (stats.pps < minPps) {
+                                cell.addClassName('missing');
+                                cell.innerHTML = stats.pps + ' pps';
+                            } else if (stats.dpp >= 0.00001) {
+                                cell.addClassName('crit');
+                                // Format discontinuitites per packet as an exponential error rate.
                                 exp = Math.floor(Math.log(Math.abs(stats.dpp)) / Math.LN10);
                                 man = stats.dpp / Math.pow(10, exp);
                                 dppForm = man.toFixed(1) + '×10<sup>' + exp + '</sup>';
-                            }
-
-                            cell.innerHTML = stats.mbps.toFixed(1) + ' Mbps';
-                            if (age > obj.reportInterval * 1.5 || stats.pps < minPps) {
-                                cell.addClassName('missing');
-                                cell.innerHTML = stats.pps + ' pps';
-                            } else if (stats.dpp >= 0.0001) {
-                                cell.addClassName('crit');
                                 cell.innerHTML = dppForm;
                             } else if (stats.dph > 0) {
                                 cell.addClassName('warn');
-                                cell.innerHTML = dppForm;
+                                cell.innerHTML = stats.dph + ' Eph';
                             } else {
                                 cell.addClassName('ok');
                             }

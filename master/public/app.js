@@ -3,6 +3,62 @@ var tableIdRegexp = new RegExp("^\\d+\\.\\d+\\.\\d+\\.");
 var minPps = 20; // Absolute minimum expected PPS for a channel.
 var refreshInterval = 5; // seconds, will be updated by master server
 
+var channelNames = {
+    // DK
+    '239.193.45.32': 'DR1',
+    '239.193.45.33': 'DR2',
+    '239.193.45.34': 'DR Update',
+    '239.193.45.35': 'TV2 (Lorry)',
+    '239.193.45.64': 'Kanal Köpenhamn',
+    '239.193.45.65': '6\'eren',
+    '239.193.45.66': 'SVT1',
+    '239.193.45.67': 'SVT2',
+    '239.193.45.68': 'TV4',
+    '239.193.45.69': 'TV2 Norge',
+    '239.193.45.70': 'RTL',
+    '239.193.45.71': 'Discovery Channel (D)',
+    '239.193.45.72': 'TV2 Zulu',
+    '239.193.45.96': 'TV2 Charlie',
+    '239.193.45.97': 'TV2 News',
+    '239.193.45.98': 'TV2 Film',
+    '239.193.45.99': 'Animal Planet',
+    '239.193.45.100': 'Discovery Science',
+    '239.193.45.101': 'Discovery World',
+    '239.193.45.102': 'Discovery T&L',
+    '239.193.45.103': 'MTV (D)',
+    '239.193.45.104': 'VH1',
+    '239.193.45.105': 'Nickelodeon (D)',
+    '239.193.45.106': 'BBC World',
+    // SE
+    '239.193.46.32': 'SVT1',
+    '239.193.46.33': 'SVT2',
+    '239.193.46.34': 'SVT Kunskapskanalen',
+    '239.193.46.35': 'TV4',
+    '239.193.46.36': 'DR1',
+    '239.193.46.37': 'DR2',
+    '239.193.46.38': 'SVT B/24',
+    '239.193.46.39': 'Axess TV',
+    '239.193.46.40': 'Kanal Köpenhamn',
+    '239.193.46.64': 'Discovery Channel (S)',
+    '239.193.46.65': 'Animal Planet',
+    '239.193.46.66': 'Kanal 5 Syd',
+    '239.193.46.67': 'Kanal 9',
+    '239.193.46.68': 'TV4 Plus Malmö',
+    '239.193.46.69': 'TV4 Film',
+    '239.193.46.70': 'TV11',
+    '239.193.46.71': 'TV4 Fakta',
+    '239.193.46.72': 'TV4 Sport',
+    '239.193.46.73': 'Discovery Science',
+    '239.193.46.74': 'Discovery World',
+    '239.193.46.75': 'TLC',
+    '239.193.46.76': 'MTV (S)',
+    '239.193.46.77': 'VH1',
+    '239.193.46.78': 'Nickelodeon (S)',
+    '239.193.46.79': 'TV2 Lorry',
+    '239.193.46.80': 'TV2 Norge',
+    '239.193.46.81': 'BBC World',
+};
+
 // Workaround for Prototype swallowing all exceptions in callbacks.
 Ajax.Responders.register({ 
     onException: function(request, exception) { 
@@ -72,7 +128,11 @@ function prepTables(groups, probes) {
             cell = document.createElement('th');
             cell.id = 'header-' + group;
             cell.className = 'group';
-            cell.innerHTML = group;
+            if (typeof channelNames[group] !== 'undefined') {
+                cell.innerHTML = channelNames[group];
+            } else {
+                cell.innerHTML = group;
+            }
 
             row.appendChild(cell);
 

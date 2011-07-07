@@ -25,6 +25,7 @@ th {
 th.group {
     padding-left: 8px;
     padding-right: 8px;
+    text-align: left;
 }
 th.probe {
     text-align: center;
